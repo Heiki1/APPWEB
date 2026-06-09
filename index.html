@@ -6,7 +6,7 @@
     <title>Controle Financeiro & Planner</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="light">
     <nav class="menu-lateral">
         <div class="logo">
             <h2>Finanças</h2>
@@ -14,7 +14,9 @@
         <ul class="nav-links">
             <li><button class="nav-btn ativo" onclick="mudarTela('dashboard', this)">Painel Inicial</button></li>
             <li><button class="nav-btn" onclick="mudarTela('historico', this)">Histórico</button></li>
-            <li><button class="nav-btn" onclick="mudarTela('planner', this)">Planner (Metas)</button></li>
+            <li><button class="nav-btn" onclick="mudarTela('planner', this)">Planner</button></li>
+            <li class="espacador"></li>
+            <li><button class="nav-btn btn-tema" onclick="alternarTema()">🌙 Modo Escuro</button></li>
         </ul>
     </nav>
 
@@ -23,7 +25,7 @@
         <section id="dashboard" class="tela ativa">
             <header class="cabecalho">
                 <h1>Painel Financeiro</h1>
-                <p>Adicione lançamentos e veja o cálculo em tempo real.</p>
+                <p>Adicione lançamentos e acompanhe seus totais.</p>
             </header>
 
             <div class="grid-principal">
@@ -58,11 +60,11 @@
                     <h2>Resumo do Mês</h2>
                     <div class="grid-faturas">
                         <div class="card-resultado">
-                            <h3>Total de Entradas</h3>
+                            <h3>Total Entradas</h3>
                             <p class="valor-destaque positivo" id="resumo-entradas">R$ 0,00</p>
                         </div>
                         <div class="card-resultado">
-                            <h3>Total de Gastos</h3>
+                            <h3>Total Gastos</h3>
                             <p class="valor-destaque negativo" id="resumo-gastos">R$ 0,00</p>
                         </div>
                     </div>
@@ -89,20 +91,16 @@
         <section id="planner" class="tela">
             <header class="cabecalho">
                 <h1>Planner Financeiro</h1>
-                <p>Defina e acompanhe suas metas (Kanban).</p>
+                <p>Arraste os cartões para mudar o status da sua meta.</p>
             </header>
             
             <div class="kanban-board">
                 <div class="kanban-coluna">
-                    <h3 class="kanban-titulo">A Fazer (Metas)</h3>
-                    <div class="kanban-cartoes" id="coluna-fazer">
-                        <div class="kanban-card">
+                    <h3 class="kanban-titulo">A Fazer</h3>
+                    <div class="kanban-zona-soltar" id="coluna-fazer">
+                        <div class="kanban-card" draggable="true">
                             <strong>Reserva de Emergência</strong>
                             <p>Juntar R$ 1.000 até o final do ano.</p>
-                        </div>
-                        <div class="kanban-card">
-                            <strong>Trocar de Celular</strong>
-                            <p>Pesquisar preços na Black Friday.</p>
                         </div>
                     </div>
                     <button class="btn btn-secundario btn-add-card" onclick="adicionarMeta()">+ Nova Meta</button>
@@ -110,20 +108,20 @@
 
                 <div class="kanban-coluna">
                     <h3 class="kanban-titulo">Em Andamento</h3>
-                    <div class="kanban-cartoes" id="coluna-andamento">
-                        <div class="kanban-card">
-                            <strong>Cortar gastos com Ifood</strong>
-                            <p>Limite de 2 pedidos por mês.</p>
+                    <div class="kanban-zona-soltar" id="coluna-andamento">
+                        <div class="kanban-card" draggable="true">
+                            <strong>Cortar gastos de app</strong>
+                            <p>Limite de 2 pedidos/mês.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="kanban-coluna">
                     <h3 class="kanban-titulo">Concluído</h3>
-                    <div class="kanban-cartoes" id="coluna-concluido">
-                        <div class="kanban-card card-sucesso">
-                            <strong>Quitar Cartão de Crédito</strong>
-                            <p>Pago em 10/10.</p>
+                    <div class="kanban-zona-soltar" id="coluna-concluido">
+                        <div class="kanban-card card-sucesso" draggable="true">
+                            <strong>Quitar Cartão</strong>
+                            <p>Pago no dia 10.</p>
                         </div>
                     </div>
                 </div>
