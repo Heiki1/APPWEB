@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro & Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="menu-lateral">
+        <div class="logo">
+            <h2>Finanças</h2>
+        </div>
+        <ul class="nav-links">
+            <li><button class="nav-btn ativo" onclick="mudarTela('dashboard', this)">Painel Inicial</button></li>
+            <li><button class="nav-btn" onclick="mudarTela('historico', this)">Histórico</button></li>
+            <li><button class="nav-btn" onclick="mudarTela('planner', this)">Planner (Metas)</button></li>
+        </ul>
+    </nav>
+
+    <main class="conteudo-principal">
+        
+        <section id="dashboard" class="tela ativa">
+            <header class="cabecalho">
+                <h1>Painel Financeiro</h1>
+                <p>Adicione lançamentos e veja o cálculo em tempo real.</p>
+            </header>
+
+            <div class="grid-principal">
+                <div class="caixa">
+                    <h2>Novo Lançamento</h2>
+                    <form id="form-lancamento" class="formulario">
+                        <div class="grupo-input">
+                            <label for="descricao">Descrição</label>
+                            <input type="text" id="descricao" required placeholder="Ex: Conta de Luz">
+                        </div>
+                        <div class="linha-inputs">
+                            <div class="grupo-input">
+                                <label for="valor">Valor (R$)</label>
+                                <input type="number" id="valor" step="0.01" required placeholder="0.00">
+                            </div>
+                            <div class="grupo-input">
+                                <label for="tipo">Tipo</label>
+                                <select id="tipo" required>
+                                    <option value="Entrada">Entrada / Receita</option>
+                                    <option value="Gasto Fixo">Gasto Fixo</option>
+                                    <option value="Gasto Variável">Gasto Variável</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="acoes-formulario">
+                            <button type="submit" class="btn btn-primario">Adicionar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="caixa">
+                    <h2>Resumo do Mês</h2>
+                    <div class="grid-faturas">
+                        <div class="card-resultado">
+                            <h3>Total de Entradas</h3>
+                            <p class="valor-destaque positivo" id="resumo-entradas">R$ 0,00</p>
+                        </div>
+                        <div class="card-resultado">
+                            <h3>Total de Gastos</h3>
+                            <p class="valor-destaque negativo" id="resumo-gastos">R$ 0,00</p>
+                        </div>
+                    </div>
+                    <div class="saldo-container">
+                        <h3>Saldo Disponível</h3>
+                        <p class="valor-destaque" id="resumo-saldo">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historico" class="tela">
+            <header class="cabecalho">
+                <h1>Histórico de Lançamentos</h1>
+                <p>Todos os seus registros salvos.</p>
+            </header>
+            <div class="caixa">
+                <ul class="lista-resultados" id="lista-historico">
+                    <li class="item-vazio">Nenhum lançamento registrado ainda.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="planner" class="tela">
+            <header class="cabecalho">
+                <h1>Planner Financeiro</h1>
+                <p>Defina e acompanhe suas metas (Kanban).</p>
+            </header>
+            
+            <div class="kanban-board">
+                <div class="kanban-coluna">
+                    <h3 class="kanban-titulo">A Fazer (Metas)</h3>
+                    <div class="kanban-cartoes" id="coluna-fazer">
+                        <div class="kanban-card">
+                            <strong>Reserva de Emergência</strong>
+                            <p>Juntar R$ 1.000 até o final do ano.</p>
+                        </div>
+                        <div class="kanban-card">
+                            <strong>Trocar de Celular</strong>
+                            <p>Pesquisar preços na Black Friday.</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secundario btn-add-card" onclick="adicionarMeta()">+ Nova Meta</button>
+                </div>
+
+                <div class="kanban-coluna">
+                    <h3 class="kanban-titulo">Em Andamento</h3>
+                    <div class="kanban-cartoes" id="coluna-andamento">
+                        <div class="kanban-card">
+                            <strong>Cortar gastos com Ifood</strong>
+                            <p>Limite de 2 pedidos por mês.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kanban-coluna">
+                    <h3 class="kanban-titulo">Concluído</h3>
+                    <div class="kanban-cartoes" id="coluna-concluido">
+                        <div class="kanban-card card-sucesso">
+                            <strong>Quitar Cartão de Crédito</strong>
+                            <p>Pago em 10/10.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

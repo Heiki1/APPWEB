@@ -1,0 +1,104 @@
+/* Variáveis Globais e Modo Escuro Automático */
+:root {
+    --fundo-pagina: #f4f6f9;
+    --fundo-caixa: #ffffff;
+    --fundo-menu: #1e293b;
+    --texto-principal: #333333;
+    --texto-secundario: #64748b;
+    --texto-menu: #f8fafc;
+    --borda: #e2e8f0;
+    --cor-primaria: #3b82f6;
+    --cor-primaria-hover: #2563eb;
+    --cor-secundaria: #e2e8f0;
+    --cor-secundaria-hover: #cbd5e1;
+    --cor-texto-btn-sec: #333333;
+    --cor-positivo: #10b981;
+    --cor-negativo: #ef4444;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fundo-pagina: #0f172a;
+        --fundo-caixa: #1e293b;
+        --fundo-menu: #0b0f19;
+        --texto-principal: #f8fafc;
+        --borda: #334155;
+        --cor-secundaria: #334155;
+        --cor-secundaria-hover: #475569;
+        --cor-texto-btn-sec: #f8fafc;
+    }
+}
+
+/* Reset e Estrutura */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { display: flex; min-height: 100vh; background-color: var(--fundo-pagina); color: var(--texto-principal); }
+
+/* Menu Lateral */
+.menu-lateral {
+    width: 250px;
+    background-color: var(--fundo-menu);
+    color: var(--texto-menu);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.logo h2 { margin-bottom: 30px; color: var(--cor-primaria); }
+.nav-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.nav-btn {
+    width: 100%; text-align: left; background: none; border: none; padding: 12px;
+    color: var(--texto-menu); font-size: 16px; cursor: pointer; border-radius: 6px; transition: 0.3s;
+}
+.nav-btn:hover, .nav-btn.ativo { background-color: var(--cor-primaria); }
+
+/* Conteúdo Principal */
+.conteudo-principal { flex: 1; padding: 30px; overflow-y: auto; }
+.cabecalho { margin-bottom: 25px; animation: fadeIn 0.5s ease; }
+.cabecalho h1 { color: var(--cor-primaria); margin-bottom: 5px; }
+.tela { display: none; animation: fadeIn 0.4s ease; }
+.tela.ativa { display: block; }
+
+/* Caixas e Formulário */
+.grid-principal { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.caixa { background-color: var(--fundo-caixa); padding: 20px; border-radius: 12px; border: 1px solid var(--borda); }
+.caixa h2 { margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; }
+.formulario { display: flex; flex-direction: column; gap: 15px; }
+.linha-inputs { display: flex; gap: 15px; }
+.grupo-input { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.grupo-input label { font-size: 14px; font-weight: bold; }
+.grupo-input input, .grupo-input select {
+    padding: 10px; border-radius: 6px; border: 1px solid var(--borda); background-color: var(--fundo-pagina); color: var(--texto-principal);
+}
+.btn { padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.btn-primario { background-color: var(--cor-primaria); color: white; width: 100%; }
+.btn-primario:hover { background-color: var(--cor-primaria-hover); }
+.btn-secundario { background-color: var(--cor-secundaria); color: var(--cor-texto-btn-sec); width: 100%; }
+.btn-secundario:hover { background-color: var(--cor-secundaria-hover); }
+
+/* Resultados */
+.grid-faturas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.card-resultado { padding: 15px; background-color: var(--fundo-pagina); border-radius: 8px; border: 1px solid var(--borda); }
+.valor-destaque { font-size: 24px; font-weight: bold; margin-top: 10px; }
+.positivo { color: var(--cor-positivo); }
+.negativo { color: var(--cor-negativo); }
+.saldo-container { padding: 15px; background-color: rgba(59, 130, 246, 0.1); border-radius: 8px; text-align: center; }
+
+/* Histórico (Lista) */
+.lista-resultados { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.item-resultado { display: flex; justify-content: space-between; padding: 15px; border-radius: 6px; border: 1px solid var(--borda); background-color: var(--fundo-pagina); }
+
+/* Kanban (Planner) */
+.kanban-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.kanban-coluna { background-color: var(--fundo-caixa); padding: 15px; border-radius: 12px; border: 1px solid var(--borda); }
+.kanban-titulo { font-size: 16px; margin-bottom: 15px; text-align: center; }
+.kanban-cartoes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+.kanban-card { background-color: var(--fundo-pagina); padding: 15px; border-radius: 8px; border: 1px solid var(--borda); border-left: 4px solid var(--cor-primaria); }
+.card-sucesso { border-left-color: var(--cor-positivo); }
+
+/* Animações e Responsivo */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .menu-lateral { width: 100%; padding: 10px; flex-direction: row; align-items: center; justify-content: space-between; }
+    .nav-links { flex-direction: row; }
+    .grid-principal, .kanban-board { grid-template-columns: 1fr; }
+}
