@@ -1,3 +1,4 @@
+/* Variáveis de Tema Padrão (Claro) */
 :root {
     --fundo-pagina: #f4f6f9;
     --fundo-caixa: #ffffff;
@@ -13,9 +14,9 @@
     --cor-texto-btn-sec: #333333;
     --cor-positivo: #10b981;
     --cor-negativo: #ef4444;
-    --cor-alerta: #f59e0b; /* Amarelo inserido aqui */
 }
 
+/* Variáveis do Modo Escuro */
 [data-theme="dark"] {
     --fundo-pagina: #0f172a;
     --fundo-caixa: #1e293b;
@@ -28,72 +29,44 @@
     --cor-texto-btn-sec: #f8fafc;
 }
 
+/* Reset Global */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { display: flex; min-height: 100vh; background-color: var(--fundo-pagina); color: var(--texto-principal); transition: 0.3s; }
+body { display: flex; min-height: 100vh; background-color: var(--fundo-pagina); color: var(--texto-principal); transition: background-color 0.3s, color 0.3s; }
 
-.overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
-    z-index: 998; opacity: 0; transition: opacity 0.3s ease;
-}
-.overlay.ativo { display: block; opacity: 1; }
-
-.header-mobile { display: none; }
-
+/* Menu Lateral */
 .menu-lateral {
-    width: 250px; background-color: var(--fundo-menu); padding: 20px;
-    display: flex; flex-direction: column; transition: width 0.3s ease, left 0.3s ease;
-    overflow-x: hidden; white-space: nowrap; flex-shrink: 0; position: relative; z-index: 999;
+    width: 250px; 
+    background-color: var(--fundo-menu); 
+    padding: 20px;
+    display: flex; 
+    flex-direction: column; 
+    transition: background-color 0.3s;
 }
-.menu-lateral.recolhido { width: 80px; }
-
-.header-menu { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.marca-logo { display: flex; align-items: center; gap: 10px; color: var(--cor-primaria); }
-.logo-texto { font-size: 20px; transition: opacity 0.2s; }
-.icone-marca { flex-shrink: 0; }
-
-.btn-hamburguer {
-    background: none; border: none; color: var(--cor-primaria);
-    cursor: pointer; padding: 5px; border-radius: 4px; transition: 0.2s;
-    display: flex; align-items: center; justify-content: center;
-}
-.btn-hamburguer:hover { background-color: rgba(255,255,255,0.1); }
-
-.menu-lateral.recolhido .marca-logo { display: none; }
-.menu-lateral.recolhido .header-menu { justify-content: center; }
-
+.logo h2 { margin-bottom: 30px; color: var(--cor-primaria); }
 .nav-links { list-style: none; display: flex; flex-direction: column; gap: 10px; height: 100%; }
 .espacador { flex-grow: 1; }
-
 .nav-btn {
-    width: 100%; display: flex; align-items: center; gap: 15px;
-    background: none; border: none; padding: 12px; color: var(--texto-menu); 
-    font-size: 16px; cursor: pointer; border-radius: 6px; transition: 0.3s;
+    width: 100%; text-align: left; background: none; border: none; padding: 12px;
+    color: var(--texto-menu); font-size: 16px; cursor: pointer; border-radius: 6px; transition: 0.3s;
 }
 .nav-btn:hover, .nav-btn.ativo { background-color: var(--cor-primaria); }
+.btn-tema { border: 1px solid var(--borda); margin-top: auto; text-align: center;}
 
-.icone-nav { flex-shrink: 0; }
-.texto-link { transition: opacity 0.2s; }
-.menu-lateral.recolhido .texto-link { opacity: 0; visibility: hidden; }
-.btn-tema { border: 1px solid var(--borda); margin-top: auto;}
-
-.conteudo-principal { flex: 1; padding: 30px; overflow-y: auto; width: 100%; }
+/* Layout Principal */
+.conteudo-principal { flex: 1; padding: 30px; overflow-y: auto; }
 .cabecalho { margin-bottom: 25px; }
 .cabecalho h1 { color: var(--cor-primaria); margin-bottom: 5px; }
 .tela { display: none; animation: fadeIn 0.4s ease; }
 .tela.ativa { display: block; }
 
+/* Dashboard e Formulário */
 .grid-principal { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.caixa { background-color: var(--fundo-caixa); padding: 20px; border-radius: 12px; border: 1px solid var(--borda); transition: 0.3s; }
+.caixa { background-color: var(--fundo-caixa); padding: 20px; border-radius: 12px; border: 1px solid var(--borda); transition: background-color 0.3s, border-color 0.3s; }
 .caixa h2 { margin-bottom: 15px; font-size: 18px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; }
 .formulario { display: flex; flex-direction: column; gap: 15px; }
 .linha-inputs { display: flex; gap: 15px; }
 .grupo-input { flex: 1; display: flex; flex-direction: column; gap: 5px; }
 .grupo-input label { font-size: 14px; font-weight: bold; }
-
-input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-input[type="number"] { -moz-appearance: textfield; }
-
 .grupo-input input, .grupo-input select { padding: 10px; border-radius: 6px; border: 1px solid var(--borda); background-color: var(--fundo-pagina); color: var(--texto-principal); }
 .btn { padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
 .btn-primario { background-color: var(--cor-primaria); color: white; width: 100%; }
@@ -101,17 +74,19 @@ input[type="number"] { -moz-appearance: textfield; }
 .btn-secundario { background-color: var(--cor-secundaria); color: var(--cor-texto-btn-sec); width: 100%; margin-top: 10px; }
 .btn-secundario:hover { background-color: var(--cor-secundaria-hover); }
 
+/* Resultados */
 .grid-faturas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-.card-resultado { padding: 15px; background-color: var(--fundo-pagina); border-radius: 8px; border: 1px solid var(--borda); }
+.card-resultado { padding: 15px; background-color: var(--fundo-pagina); border-radius: 8px; border: 1px solid var(--borda); transition: background-color 0.3s; }
 .valor-destaque { font-size: 24px; font-weight: bold; margin-top: 10px; }
 .positivo { color: var(--cor-positivo); }
 .negativo { color: var(--cor-negativo); }
 .saldo-container { padding: 15px; background-color: rgba(59, 130, 246, 0.1); border-radius: 8px; text-align: center; }
 
+/* Histórico */
 .lista-resultados { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .item-resultado { display: flex; justify-content: space-between; padding: 15px; border-radius: 6px; border: 1px solid var(--borda); background-color: var(--fundo-pagina); }
 
-/* Kanban Modificadores de Cores */
+/* Kanban Drag & Drop */
 .kanban-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .kanban-coluna { background-color: var(--fundo-caixa); padding: 15px; border-radius: 12px; border: 1px solid var(--borda); display: flex; flex-direction: column; }
 .kanban-titulo { font-size: 16px; margin-bottom: 15px; text-align: center; }
@@ -119,43 +94,25 @@ input[type="number"] { -moz-appearance: textfield; }
 .kanban-zona-soltar.drag-ativo { background-color: rgba(59, 130, 246, 0.1); border: 2px dashed var(--cor-primaria); }
 
 .kanban-card { 
-    position: relative; background-color: var(--fundo-pagina); padding: 15px; border-radius: 8px; border: 1px solid var(--borda); 
+    background-color: var(--fundo-pagina); padding: 15px; border-radius: 8px; border: 1px solid var(--borda); 
     border-left: 4px solid var(--cor-primaria); cursor: grab; user-select: none; transition: transform 0.2s, box-shadow 0.2s; 
-    touch-action: none; /* Melhora o comportamento de arrasto em telas de toque */
 }
 .kanban-card:active { cursor: grabbing; transform: scale(0.98); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
 .kanban-card.arrastando { opacity: 0.5; }
-
-/* Cores das colunas do Kanban */
-.card-andamento { border-left-color: var(--cor-alerta); }
 .card-sucesso { border-left-color: var(--cor-positivo); }
 
-.btn-excluir {
-    position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--texto-secundario);
-    font-size: 18px; font-weight: bold; cursor: pointer; transition: color 0.2s; line-height: 1;
-}
-.btn-excluir:hover { color: var(--cor-negativo); }
-
+/* Responsividade Mobile */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (max-width: 768px) {
     body { flex-direction: column; }
     
-    .header-mobile {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 15px 20px; background-color: var(--fundo-menu); border-bottom: 1px solid var(--borda);
-    }
-    .btn-hamburguer-mobile { background: none; border: none; color: var(--cor-primaria); cursor: pointer; display: flex;}
-
-    .menu-lateral {
-        position: fixed; top: 0; left: -280px; width: 280px; height: 100vh;
-    }
-    .menu-lateral.aberto { left: 0; }
-    .menu-lateral .marca-logo, .menu-lateral .texto-link, .menu-lateral .icone-nav { display: flex !important; opacity: 1 !important; visibility: visible !important; }
-    .menu-lateral.recolhido { width: 280px; }
-    .header-menu { justify-content: space-between !important; }
-
-    .conteudo-principal { padding: 15px; }
+    .menu-lateral { width: 100%; padding: 10px 20px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .logo h2 { margin-bottom: 0; }
+    .nav-links { flex-direction: row; flex-wrap: wrap; gap: 5px; height: auto; width: 100%; margin-top: 15px; }
+    .nav-btn { width: auto; padding: 8px 12px; text-align: center; flex: 1; font-size: 14px; }
+    .espacador { display: none; }
+    
     .grid-principal, .kanban-board { grid-template-columns: 1fr; }
     .linha-inputs { flex-direction: column; }
 }
