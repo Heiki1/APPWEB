@@ -1,4 +1,22 @@
-// ==================== TELA E LÓGICA ====================
+function alternarMenu() {
+    if (window.innerWidth <= 768) {
+        fecharMenuMobile();
+    } else {
+        const menu = document.getElementById('menu-lateral');
+        menu.classList.toggle('recolhido');
+    }
+}
+
+function abrirMenuMobile() {
+    document.getElementById('menu-lateral').classList.add('aberto');
+    document.getElementById('overlay').classList.add('ativo');
+}
+
+function fecharMenuMobile() {
+    document.getElementById('menu-lateral').classList.remove('aberto');
+    document.getElementById('overlay').classList.remove('ativo');
+}
+
 let totalEntradas = 0;
 let totalGastos = 0;
 
@@ -8,23 +26,25 @@ function mudarTela(idTelaSelecionada, btnClicado) {
     
     document.getElementById(idTelaSelecionada).classList.add('ativa');
     btnClicado.classList.add('ativo');
-}
 
-// ==================== MODO ESCURO ====================
-function alternarTema() {
-    const corpo = document.body;
-    const btnTema = document.querySelector('.btn-tema');
-    
-    if (corpo.getAttribute('data-theme') === 'light') {
-        corpo.setAttribute('data-theme', 'dark');
-        btnTema.innerHTML = '☀️ Modo Claro';
-    } else {
-        corpo.setAttribute('data-theme', 'light');
-        btnTema.innerHTML = '🌙 Modo Escuro';
+    if (window.innerWidth <= 768) {
+        fecharMenuMobile();
     }
 }
 
-// ==================== ADICIONAR Lançamento ====================
+function alternarTema() {
+    const corpo = document.body;
+    const textoTema = document.querySelector('.texto-tema');
+    
+    if (corpo.getAttribute('data-theme') === 'light') {
+        corpo.setAttribute('data-theme', 'dark');
+        textoTema.innerHTML = 'Modo Claro';
+    } else {
+        corpo.setAttribute('data-theme', 'light');
+        textoTema.innerHTML = 'Modo Escuro';
+    }
+}
+
 document.getElementById('form-lancamento').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -66,11 +86,23 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
     this.reset();
 });
 
-// ==================== KANBAN (DRAG AND DROP) ====================
+// ==================== KANBAN (DRAG AND DROP COM SUPORTE MOBILE) ====================
 let cartaoArrastado = null;
+let touchX, touchY;
 
-// Ativa o Drag and Drop em um cartão específico
+// Função inteligente que muda a cor do cartão com base no ID da coluna em que ele caiu
+function atualizarCorCartao(cartao, colunaId) {
+    cartao.classList.remove('card-sucesso', 'card-andamento');
+    
+    if (colunaId === 'coluna-concluido') {
+        cartao.classList.add('card-sucesso');
+    } else if (colunaId === 'coluna-andamento') {
+        cartao.classList.add('card-andamento');
+    }
+}
+
 function aplicarEventosDragAndDrop(cartao) {
+    // ---- EVENTOS PARA COMPUTADOR (MOUSE) ----
     cartao.addEventListener('dragstart', function() {
         cartaoArrastado = cartao;
         setTimeout(() => cartao.classList.add('arrastando'), 0);
@@ -80,15 +112,50 @@ function aplicarEventosDragAndDrop(cartao) {
         cartao.classList.remove('arrastando');
         cartaoArrastado = null;
     });
+
+    // ---- EVENTOS PARA CELULAR (TOQUE NA TELA) ----
+    cartao.addEventListener('touchstart', function(e) {
+        // Se a pessoa clicou no botão "X" de excluir, o cartão não deve ser arrastado
+        if (e.target.classList.contains('btn-excluir')) return; 
+        
+        cartaoArrastado = cartao;
+        setTimeout(() => cartao.classList.add('arrastando'), 0);
+    }, { passive: false });
+
+    cartao.addEventListener('touchmove', function(e) {
+        if (!cartaoArrastado) return;
+        e.preventDefault(); // Previne a tela de rolar para cima e para baixo enquanto arrasta
+        touchX = e.touches[0].clientX;
+        touchY = e.touches[0].clientY;
+    }, { passive: false });
+
+    cartao.addEventListener('touchend', function(e) {
+        if (!cartaoArrastado) return;
+        cartao.classList.remove('arrastando');
+
+        // Se o dedo se moveu na tela, calcula onde ele soltou
+        if (touchX && touchY) {
+            let elementoAbaixo = document.elementFromPoint(touchX, touchY);
+            let zonaSoltar = elementoAbaixo ? elementoAbaixo.closest('.kanban-zona-soltar') : null;
+
+            if (zonaSoltar) {
+                zonaSoltar.appendChild(cartaoArrastado);
+                atualizarCorCartao(cartaoArrastado, zonaSoltar.id);
+            }
+        }
+
+        cartaoArrastado = null;
+        touchX = null;
+        touchY = null;
+    });
 }
 
-// Aplica aos cartões iniciais da tela
 document.querySelectorAll('.kanban-card').forEach(aplicarEventosDragAndDrop);
 
-// Configura as colunas para receberem os cartões
+// Configuração das Zonas para o Computador (Mouse Drop)
 document.querySelectorAll('.kanban-zona-soltar').forEach(zona => {
     zona.addEventListener('dragover', function(e) {
-        e.preventDefault(); // Necessário para permitir o drop
+        e.preventDefault(); 
         this.classList.add('drag-ativo');
     });
 
@@ -99,31 +166,31 @@ document.querySelectorAll('.kanban-zona-soltar').forEach(zona => {
     zona.addEventListener('drop', function() {
         this.classList.remove('drag-ativo');
         if (cartaoArrastado) {
-            this.appendChild(cartaoArrastado); // Move o card do HTML para a nova coluna
-            
-            // Muda cor lateral se foi para "Concluído"
-            if (this.id === 'coluna-concluido') {
-                cartaoArrastado.classList.add('card-sucesso');
-            } else {
-                cartaoArrastado.classList.remove('card-sucesso');
-            }
+            this.appendChild(cartaoArrastado); 
+            atualizarCorCartao(cartaoArrastado, this.id);
         }
     });
 });
 
-// Criar novo cartão
+function excluirMeta(botao) {
+    if (confirm("Tem certeza que deseja excluir esta meta?")) {
+        botao.closest('.kanban-card').remove();
+    }
+}
+
 function adicionarMeta() {
     const nomeMeta = prompt("Qual é a sua nova meta financeira?");
-    if (nomeMeta) {
+    if (nomeMeta && nomeMeta.trim() !== "") {
         const novoCartao = document.createElement('div');
         novoCartao.className = 'kanban-card';
         novoCartao.setAttribute('draggable', 'true');
+        
         novoCartao.innerHTML = `
+            <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
             <strong>${nomeMeta}</strong>
             <p>Nova meta adicionada.</p>
         `;
         
-        // Aplica lógica de arrastar ao novo card
         aplicarEventosDragAndDrop(novoCartao);
         document.getElementById('coluna-fazer').appendChild(novoCartao);
     }
