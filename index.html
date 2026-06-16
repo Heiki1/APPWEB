@@ -1,5 +1,3 @@
-<!-- Este é um comentário de uma única linha -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,8 +8,10 @@
 </head>
 <body data-theme="light">
 
+    <!-- Camada de Desfoque para o Mobile -->
     <div class="overlay" id="overlay" onclick="fecharMenuMobile()"></div>
 
+    <!-- Cabeçalho Exclusivo do Mobile -->
     <header class="header-mobile">
         <button class="btn-hamburguer-mobile" onclick="abrirMenuMobile()" title="Abrir Menu">
             <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -22,6 +22,7 @@
         </div>
     </header>
 
+    <!-- Menu Lateral Principal -->
     <nav class="menu-lateral" id="menu-lateral">
         <div class="header-menu">
             <div class="marca-logo">
@@ -66,72 +67,151 @@
 
     <main class="conteudo-principal">
         
+        <!-- TELA 1: DASHBOARD -->
         <section id="dashboard" class="tela ativa">
             <header class="cabecalho">
                 <h1>Painel Financeiro</h1>
-                <p>Adicione lançamentos e acompanhe seus totais.</p>
+                <p>Acompanhe seus totais e a distribuição dos seus gastos.</p>
             </header>
 
-            <div class="grid-principal">
+            <div class="cards-resumo">
+                <div class="card-dash">
+                    <div class="card-icon icon-verde">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    </div>
+                    <div class="card-info">
+                        <h3>Total Entradas</h3>
+                        <p class="valor-destaque positivo" id="resumo-entradas">R$ 0,00</p>
+                    </div>
+                </div>
+                
+                <div class="card-dash">
+                    <div class="card-icon icon-vermelho">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                    </div>
+                    <div class="card-info">
+                        <h3>Total Gastos</h3>
+                        <p class="valor-destaque negativo" id="resumo-gastos">R$ 0,00</p>
+                    </div>
+                </div>
+
+                <div class="card-dash">
+                    <div class="card-icon icon-azul">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+                    </div>
+                    <div class="card-info">
+                        <h3>Saldo Atual</h3>
+                        <p class="valor-destaque" id="resumo-saldo">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-dashboard-principal">
+                
+                <div class="coluna-graficos">
+                    <div class="caixa">
+                        <h2>Análise de Gastos</h2>
+                        <div class="grafico-container">
+                            <div class="donut-chart" id="grafico-despesas">
+                                <div class="donut-hole">
+                                    <div style="text-align: center;">
+                                        <small style="color: var(--texto-secundario); font-size: 11px;">Total</small><br>
+                                        <strong id="texto-donut" style="font-size: 14px;">R$ 0,00</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="legenda-grafico">
+                                <div class="item-legenda">
+                                    <span class="bolinha bolinha-fixo"></span>
+                                    <span>Gasto Fixo (<span id="pct-fixo">0%</span>)</span>
+                                </div>
+                                <div class="item-legenda">
+                                    <span class="bolinha bolinha-variavel"></span>
+                                    <span>Gasto Variável (<span id="pct-variavel">0%</span>)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa">
+                        <h2>Fluxo de Caixa</h2>
+                        <div class="bar-chart">
+                            <div class="bar-row">
+                                <div class="bar-label">
+                                    <span>Receitas</span>
+                                    <span id="lbl-entradas" class="positivo">R$ 0,00</span>
+                                </div>
+                                <div class="bar-track">
+                                    <div class="bar-fill bg-positivo" id="bar-entradas" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">
+                                    <span>Despesas</span>
+                                    <span id="lbl-saidas" class="negativo">R$ 0,00</span>
+                                </div>
+                                <div class="bar-track">
+                                    <div class="bar-fill bg-negativo" id="bar-saidas" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="caixa">
                     <h2>Novo Lançamento</h2>
                     <form id="form-lancamento" class="formulario">
                         <div class="grupo-input">
                             <label for="descricao">Descrição</label>
-                            <input type="text" id="descricao" required placeholder="Ex: Conta de Luz">
+                            <input type="text" id="descricao" required placeholder="Ex: Conta de Luz, Salário...">
                         </div>
-                        <div class="linha-inputs">
-                            <div class="grupo-input">
-                                <label for="valor">Valor (R$)</label>
-                                <input type="number" id="valor" step="0.01" required placeholder="0.00" onkeydown="return !['e', 'E', '+', '-'].includes(event.key)">
-                            </div>
-                            <div class="grupo-input">
-                                <label for="tipo">Tipo</label>
-                                <select id="tipo" required>
-                                    <option value="Entrada">Entrada / Receita</option>
-                                    <option value="Gasto Fixo">Gasto Fixo</option>
-                                    <option value="Gasto Variável">Gasto Variável</option>
-                                </select>
-                            </div>
+                        <div class="grupo-input">
+                            <label for="valor">Valor (R$)</label>
+                            <input type="number" id="valor" step="0.01" required placeholder="0.00" onkeydown="return !['e', 'E', '+', '-'].includes(event.key)">
                         </div>
-                        <div class="acoes-formulario">
-                            <button type="submit" class="btn btn-primario">Adicionar</button>
+                        <div class="grupo-input">
+                            <label for="tipo">Tipo de Lançamento</label>
+                            <select id="tipo" required>
+                                <option value="Entrada">Receita</option>
+                                <option value="Gasto Fixo">Gasto Fixo</option>
+                                <option value="Gasto Variável">Gasto Variável</option>
+                            </select>
+                        </div>
+                        <div class="acoes-formulario" style="margin-top: 10px;">
+                            <button type="submit" class="btn btn-primario">Lançar</button>
                         </div>
                     </form>
                 </div>
 
-                <div class="caixa">
-                    <h2>Resumo do Mês</h2>
-                    <div class="grid-faturas">
-                        <div class="card-resultado">
-                            <h3>Total Entradas</h3>
-                            <p class="valor-destaque positivo" id="resumo-entradas">R$ 0,00</p>
-                        </div>
-                        <div class="card-resultado">
-                            <h3>Total Gastos</h3>
-                            <p class="valor-destaque negativo" id="resumo-gastos">R$ 0,00</p>
-                        </div>
-                    </div>
-                    <div class="saldo-container">
-                        <h3>Saldo Disponível</h3>
-                        <p class="valor-destaque" id="resumo-saldo">R$ 0,00</p>
-                    </div>
-                </div>
             </div>
         </section>
 
+        <!-- TELA 2: HISTÓRICO -->
         <section id="historico" class="tela">
             <header class="cabecalho">
                 <h1>Histórico de Lançamentos</h1>
                 <p>Todos os seus registros salvos.</p>
             </header>
             <div class="caixa">
+                
+                <!-- NOVO: Controles de Filtro -->
+                <div class="filtros-container">
+                    <label for="filtro-tipo"><strong>Filtrar por:</strong></label>
+                    <select id="filtro-tipo" onchange="filtrarHistorico()">
+                        <option value="Todos">Todos os Lançamentos</option>
+                        <option value="Entrada">Apenas Entradas</option>
+                        <option value="Gasto Fixo">Apenas Gastos Fixos</option>
+                        <option value="Gasto Variável">Apenas Gastos Variáveis</option>
+                    </select>
+                </div>
+
                 <ul class="lista-resultados" id="lista-historico">
                     <li class="item-vazio">Nenhum lançamento registrado ainda.</li>
                 </ul>
             </div>
         </section>
 
+        <!-- TELA 3: PLANNER (KANBAN) -->
         <section id="planner" class="tela">
             <header class="cabecalho">
                 <h1>Planner Financeiro</h1>
@@ -145,10 +225,11 @@
                         <div class="kanban-card" draggable="true">
                             <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
                             <strong>Reserva de Emergência</strong>
-                            <p>Juntar R$ 1.000 até o final do ano.</p>
+                            <p>Meta: R$ 1.000,00</p>
+                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: 6 Meses</p>
                         </div>
                     </div>
-                    <button class="btn btn-secundario btn-add-card" onclick="adicionarMeta()">+ Nova Meta</button>
+                    <button class="btn btn-secundario btn-add-card" onclick="abrirModalMeta()">+ Nova Meta</button>
                 </div>
 
                 <div class="kanban-coluna">
@@ -157,7 +238,8 @@
                         <div class="kanban-card card-andamento" draggable="true">
                             <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
                             <strong>Cortar gastos de app</strong>
-                            <p>Limite de 2 pedidos/mês.</p>
+                            <p>Meta: R$ 150,00</p>
+                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: 1 Mês</p>
                         </div>
                     </div>
                 </div>
@@ -168,7 +250,8 @@
                         <div class="kanban-card card-sucesso" draggable="true">
                             <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
                             <strong>Quitar Cartão</strong>
-                            <p>Pago no dia 10.</p>
+                            <p>Meta: R$ 850,00</p>
+                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: Concluído</p>
                         </div>
                     </div>
                 </div>
@@ -176,6 +259,44 @@
         </section>
 
     </main>
+
+    <!-- MODAL CUSTOMIZADO PARA NOVA META -->
+    <div class="modal-overlay" id="modal-meta">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h3>Criar Nova Meta</h3>
+                <button class="btn-fechar-modal" onclick="fecharModalMeta()">&times;</button>
+            </div>
+            
+            <form id="form-meta" class="formulario">
+                <div class="grupo-input">
+                    <label for="nome-meta">Nome da Meta</label>
+                    <input type="text" id="nome-meta" required placeholder="Ex: Comprar Notebook, Viagem...">
+                </div>
+                
+                <div class="linha-inputs">
+                    <div class="grupo-input">
+                        <label for="valor-meta">Valor Total (R$)</label>
+                        <input type="number" id="valor-meta" step="0.01" required placeholder="0.00" onkeydown="return !['e', 'E', '+', '-'].includes(event.key)">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="prazo-meta">Prazo de Conclusão</label>
+                        <select id="prazo-meta" required>
+                            <option value="1 Mês">1 Mês</option>
+                            <option value="3 Meses">3 Meses</option>
+                            <option value="6 Meses">6 Meses</option>
+                            <option value="1 Ano">1 Ano</option>
+                            <option value="Mais de 1 Ano">Mais de 1 Ano</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="acoes-formulario" style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-primario">Salvar Meta</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
