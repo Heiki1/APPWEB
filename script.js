@@ -1,20 +1,26 @@
+/* ==========================================================================
+   1. CONTROLE DE MENU (DESKTOP E MOBILE)
+   ========================================================================== */
 
 /**
- * Alteração da exibição do menu lateral.
+ * Função responsável por alternar a exibição do menu lateral.
+ * Ela possui duas lógicas diferentes dependendo do tamanho da tela.
  */
 function alternarMenu() {
     // Se a largura da janela for menor ou igual a 768px (celular/tablet)
+    // Utiliza estrutura condicional (if / else) para decidir a ação
     if (window.innerWidth <= 768) {
         fecharMenuMobile(); // O botão age como um "fechar" do menu flutuante
     } else {
         // No computador, ele apenas adiciona/remove a classe 'recolhido' para encolher a barra
-        const menu = document.getElementById('menu-lateral');
+        // Utiliza const para declarar uma variável que não será reatribuída
+        const menu = document.getElementById('menu-lateral'); // Utiliza document.getElementById()
         menu.classList.toggle('recolhido');
     }
 }
 
 /**
- * Abertura do menu lateral no mobile e ativação do fundo desfocado (overlay do css)
+ * Abre o menu lateral flutuante no celular e ativa o fundo desfocado (overlay).
  */
 function abrirMenuMobile() {
     document.getElementById('menu-lateral').classList.add('aberto');
@@ -22,7 +28,7 @@ function abrirMenuMobile() {
 }
 
 /**
- * Fecha o menu lateral no celular e desativa o fundo desfocado.
+ * Fecha o menu lateral flutuante no celular e desativa o fundo desfocado.
  */
 function fecharMenuMobile() {
     document.getElementById('menu-lateral').classList.remove('aberto');
@@ -30,19 +36,23 @@ function fecharMenuMobile() {
 }
 
 
+/* ==========================================================================
+   2. NAVEGAÇÃO DE TELAS E DADOS GLOBAIS
+   ========================================================================== */
+
 // Variáveis globais que iniciam zeradas e guardam os valores somados.
+// Utiliza let para variáveis que terão seus valores alterados
 let totalEntradas = 0;
 let totalGastos = 0;
 
 /**
  * Alterna entre as abas do sistema (Dashboard, Histórico, Planner).
  * @param {string} idTelaSelecionada - O ID da seção HTML que deve aparecer.
- * @param {HTMLElement} btnClicado - O botão do menu que foi clicado (fica marcado).
+ * @param {HTMLElement} btnClicado - O botão do menu que foi clicado (para ficar marcado).
  */
 function mudarTela(idTelaSelecionada, btnClicado) {
     // 1. Esconde todas as telas removendo a classe 'ativa'
     document.querySelectorAll('.tela').forEach(tela => tela.classList.remove('ativa'));
-
     // 2. Remove o visual de "selecionado" de todos os botões do menu
     document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('ativo'));
     
@@ -56,8 +66,13 @@ function mudarTela(idTelaSelecionada, btnClicado) {
     }
 }
 
- /**
- * Altera o atributo 'data-theme' da tag <body> entre 'light' e 'dark'. 
+
+/* ==========================================================================
+   3. TEMA CLARO E ESCURO
+   ========================================================================== */
+
+/**
+ * Alterna o atributo 'data-theme' da tag <body> entre 'light' e 'dark'.
  * O CSS lê esse atributo e muda todas as variáveis de cor automaticamente.
  */
 function alternarTema() {
@@ -67,13 +82,18 @@ function alternarTema() {
     // Se estiver claro, muda para escuro e altera o texto do botão
     if (corpo.getAttribute('data-theme') === 'light') {
         corpo.setAttribute('data-theme', 'dark');
-        textoTema.innerHTML = 'Modo Claro';
+        textoTema.innerHTML = 'Modo Claro'; // Utiliza .innerHTML para alterar o conteúdo
     } else {
         // Se estiver escuro, volta para o claro
         corpo.setAttribute('data-theme', 'light');
-        textoTema.innerHTML = 'Modo Escuro';
+        textoTema.innerHTML = 'Modo Escuro'; // Utiliza .innerHTML para alterar o conteúdo
     }
 }
+
+
+/* ==========================================================================
+   4. LÓGICA DE LANÇAMENTO DE DADOS (FORMULÁRIO)
+   ========================================================================== */
 
 /**
  * Captura o evento de envio ('submit') do formulário para evitar que a página recarregue.
@@ -82,11 +102,12 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
     event.preventDefault(); // Impede o recarregamento padrão do formulário
 
     // Coleta os valores digitados pelo usuário
-    const descricao = document.getElementById('descricao').value;
-    const valor = parseFloat(document.getElementById('valor').value);
-    const tipo = document.getElementById('tipo').value;
+    const descricao = document.getElementById('descricao').value; // Utiliza .value para pegar o valor do input
+    const valor = parseFloat(document.getElementById('valor').value); // Utiliza .value para pegar o valor numérico
+    const tipo = document.getElementById('tipo').value; // Utiliza .value para pegar a opção selecionada no select
 
-    // Verifica se é entrada ou gasto e soma na variável global correspondente
+    // Verifica se é uma entrada ou um gasto e soma na variável global correspondente
+    // Estrutura condicional (if / else) obrigatória
     if (tipo === 'Entrada') {
         totalEntradas += valor;
     } else {
@@ -106,13 +127,23 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
     
     // Se existir a mensagem "Nenhum lançamento", ela é removida
     const itemVazio = document.querySelector('.item-vazio');
-    if (itemVazio) itemVazio.remove();
+    if (itemVazio) {
+        itemVazio.remove();
+    }
 
     // Define a cor e o sinal (+ ou -) baseado no tipo selecionado
-    const classeCor = tipo === 'Entrada' ? 'positivo' : 'negativo';
-    const sinal = tipo === 'Entrada' ? '+' : '-';
+    let classeCor = '';
+    let sinal = '';
+    
+    if (tipo === 'Entrada') {
+        classeCor = 'positivo';
+        sinal = '+';
+    } else {
+        classeCor = 'negativo';
+        sinal = '-';
+    }
 
-    // Injeta o novo HTML com os dados na lista de histórico
+    // Injeta o novo HTML com os dados na lista de histórico utilizando innerHTML
     listaHistorico.innerHTML += `
         <li class="item-resultado">
             <div class="info-resultado">
@@ -127,7 +158,12 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
 
     // Limpa os campos do formulário para o próximo uso
     this.reset();
-}); 
+});
+
+
+/* ==========================================================================
+   5. LÓGICA DO KANBAN (DRAG & DROP E TOQUE PARA MOBILE)
+   ========================================================================== */
 
 let cartaoArrastado = null; // Guarda o cartão que está sendo segurado
 let touchX, touchY; // Guarda as coordenadas do dedo na tela do celular
@@ -138,6 +174,7 @@ let touchX, touchY; // Guarda as coordenadas do dedo na tela do celular
  * @param {string} colunaId - O ID da coluna onde o cartão caiu.
  */
 function atualizarCorCartao(cartao, colunaId) {
+    // Primeiro remove qualquer cor de status anterior
     cartao.classList.remove('card-sucesso', 'card-andamento');
     
     // Adiciona a classe visual correspondente
@@ -146,6 +183,7 @@ function atualizarCorCartao(cartao, colunaId) {
     } else if (colunaId === 'coluna-andamento') {
         cartao.classList.add('card-andamento'); // Amarelo
     }
+    // A coluna "A Fazer" já tem a borda azul padrão do CSS, então não precisa de classe extra.
 }
 
 /**
@@ -173,15 +211,19 @@ function aplicarEventosDragAndDrop(cartao) {
     // Quando o dedo toca o cartão
     cartao.addEventListener('touchstart', function(e) {
         // Se a pessoa clicou no botão "X" de excluir, ignoramos a função de arrastar
-        if (e.target.classList.contains('btn-excluir')) return; 
+        if (e.target.classList.contains('btn-excluir')) {
+            return; 
+        }
         
         cartaoArrastado = cartao;
         setTimeout(() => cartao.classList.add('arrastando'), 0);
-    }, { passive: false });
+    }, { passive: false }); // 'passive: false' permite usarmos preventDefault() no touchmove
 
     // Enquanto o dedo desliza pela tela
     cartao.addEventListener('touchmove', function(e) {
-        if (!cartaoArrastado) return;
+        if (!cartaoArrastado) {
+            return;
+        }
         e.preventDefault(); // Impede a tela inteira de rolar para baixo enquanto o card está sendo puxado
         
         // Salva as coordenadas X e Y atuais do dedo
@@ -191,7 +233,9 @@ function aplicarEventosDragAndDrop(cartao) {
 
     // Quando o dedo sai da tela
     cartao.addEventListener('touchend', function(e) {
-        if (!cartaoArrastado) return;
+        if (!cartaoArrastado) {
+            return;
+        }
         cartao.classList.remove('arrastando');
 
         // Se o dedo registrou movimento
@@ -201,7 +245,7 @@ function aplicarEventosDragAndDrop(cartao) {
             // Procura a zona de soltar (coluna) mais próxima desse ponto
             let zonaSoltar = elementoAbaixo ? elementoAbaixo.closest('.kanban-zona-soltar') : null;
 
-            // Se soltou em cima de uma coluna válida, move o cartão para lá e muda a cor do cartão
+            // Se soltou em cima de uma coluna válida, move o cartão para lá e muda a cor
             if (zonaSoltar) {
                 zonaSoltar.appendChild(cartaoArrastado);
                 atualizarCorCartao(cartaoArrastado, zonaSoltar.id);
@@ -226,12 +270,12 @@ document.querySelectorAll('.kanban-zona-soltar').forEach(zona => {
     // Quando um cartão passa por cima da coluna
     zona.addEventListener('dragover', function(e) {
         e.preventDefault(); // Necessário para autorizar o cartão a ser solto aqui
-        this.classList.add('drag-ativo'); // Adiciona a borda
+        this.classList.add('drag-ativo'); // Adiciona a borda tracejada
     });
 
     // Quando o cartão sai de cima da coluna sem ser solto
     zona.addEventListener('dragleave', function() {
-        this.classList.remove('drag-ativo'); // Remove a borda
+        this.classList.remove('drag-ativo'); // Remove a borda tracejada
     });
 
     // Quando o cartão é solto (mouse liberado) dentro da coluna
@@ -240,7 +284,7 @@ document.querySelectorAll('.kanban-zona-soltar').forEach(zona => {
         
         if (cartaoArrastado) {
             this.appendChild(cartaoArrastado); // Transfere o HTML do card para esta coluna
-            atualizarCorCartao(cartaoArrastado, this.id); // Aplica a cor correspondente à coluna onde o cartão foi solto
+            atualizarCorCartao(cartaoArrastado, this.id); // Aplica a cor correta
         }
     });
 });
@@ -259,6 +303,7 @@ function excluirMeta(botao) {
 
 /**
  * Adiciona uma nova meta ao Kanban interagindo com o usuário.
+ * Utiliza o evento onclick no HTML para ser chamada.
  */
 function adicionarMeta() {
     // Abre uma caixa de texto solicitando o nome da meta
@@ -272,7 +317,7 @@ function adicionarMeta() {
         novoCartao.className = 'kanban-card'; // Adiciona a classe padrão
         novoCartao.setAttribute('draggable', 'true'); // Permite ser arrastado no computador
         
-        // Injeta o HTML interno (botão de excluir e título)
+        // Injeta o HTML interno (botão de excluir e título) utilizando .innerHTML
         novoCartao.innerHTML = `
             <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
             <strong>${nomeMeta}</strong>
@@ -282,7 +327,7 @@ function adicionarMeta() {
         // Passa o novo cartão pela função para habilitar o Drag & Drop nele
         aplicarEventosDragAndDrop(novoCartao);
         
-        // Joga o cartão finalizado na coluna "A Fazer"
+        // Joga o cartão finalizado na coluna "A Fazer" utilizando document.getElementById
         document.getElementById('coluna-fazer').appendChild(novoCartao);
     }
 }
