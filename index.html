@@ -194,7 +194,6 @@
             </header>
             <div class="caixa">
                 
-                <!-- NOVO: Controles de Filtro -->
                 <div class="filtros-container">
                     <label for="filtro-tipo"><strong>Filtrar por:</strong></label>
                     <select id="filtro-tipo" onchange="filtrarHistorico()">
@@ -219,40 +218,26 @@
             </header>
             
             <div class="kanban-board">
+                <!-- Coluna A Fazer (Agora começa vazia, apenas com o botão) -->
                 <div class="kanban-coluna">
                     <h3 class="kanban-titulo">A Fazer</h3>
                     <div class="kanban-zona-soltar" id="coluna-fazer">
-                        <div class="kanban-card" draggable="true">
-                            <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
-                            <strong>Reserva de Emergência</strong>
-                            <p>Meta: R$ 1.000,00</p>
-                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: 6 Meses</p>
-                        </div>
+                        <!-- Os novos cartões serão injetados aqui pelo JavaScript -->
                     </div>
                     <button class="btn btn-secundario btn-add-card" onclick="abrirModalMeta()">+ Nova Meta</button>
                 </div>
 
+                <!-- Coluna Em Andamento (Vazia) -->
                 <div class="kanban-coluna">
                     <h3 class="kanban-titulo">Em Andamento</h3>
                     <div class="kanban-zona-soltar" id="coluna-andamento">
-                        <div class="kanban-card card-andamento" draggable="true">
-                            <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
-                            <strong>Cortar gastos de app</strong>
-                            <p>Meta: R$ 150,00</p>
-                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: 1 Mês</p>
-                        </div>
                     </div>
                 </div>
 
+                <!-- Coluna Concluído (Vazia) -->
                 <div class="kanban-coluna">
                     <h3 class="kanban-titulo">Concluído</h3>
                     <div class="kanban-zona-soltar" id="coluna-concluido">
-                        <div class="kanban-card card-sucesso" draggable="true">
-                            <button class="btn-excluir" onclick="excluirMeta(this)" title="Excluir Meta">×</button>
-                            <strong>Quitar Cartão</strong>
-                            <p>Meta: R$ 850,00</p>
-                            <p style="font-size: 12px; color: var(--texto-secundario); margin-top: 5px;">Prazo: Concluído</p>
-                        </div>
                     </div>
                 </div>
             </div>
