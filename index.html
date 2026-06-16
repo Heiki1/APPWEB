@@ -283,6 +283,22 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modal-confirmacao">
+        <div class="modal-conteudo modal-pequeno">
+            <div class="modal-header">
+                <h3 style="color: var(--cor-negativo);">Excluir Meta?</h3>
+                <button class="btn-fechar-modal" onclick="fecharModalConfirmacao()">&times;</button>
+            </div>
+            <p style="margin-bottom: 20px; color: var(--texto-secundario);">
+                Tem certeza que deseja excluir esta meta? Esta ação não pode ser desfeita.
+            </p>
+            <div class="acoes-formulario linha-inputs">
+                <button class="btn btn-secundario" onclick="fecharModalConfirmacao()">Cancelar</button>
+                <button class="btn btn-primario" style="background-color: var(--cor-negativo);" onclick="confirmarExclusao()">Sim, Excluir</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -144,7 +144,6 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
         sinal = '-';
     }
 
-    // O atributo data-tipo="${tipo}" é crucial para o filtro funcionar
     listaHistorico.innerHTML += `
         <li class="item-resultado" data-tipo="${tipo}">
             <div class="info-resultado">
@@ -157,9 +156,7 @@ document.getElementById('form-lancamento').addEventListener('submit', function(e
         </li>
     `;
 
-    // Garante que o item recém adicionado respeite o filtro que já está ativo
     filtrarHistorico();
-
     this.reset();
 });
 
@@ -192,6 +189,7 @@ function aplicarEventosDragAndDrop(cartao) {
     });
 
     cartao.addEventListener('touchstart', function(e) {
+        // Se tocou no botão de excluir (X), não inicia o arraste do cartão
         if (e.target.classList.contains('btn-excluir')) { return; }
         
         cartaoArrastado = cartao;
@@ -245,15 +243,30 @@ document.querySelectorAll('.kanban-zona-soltar').forEach(zona => {
     });
 });
 
+/* ==========================================================================
+   7. LÓGICA DO MODAL DE EXCLUSÃO DE METAS (CONFIRMAÇÃO CUSTOMIZADA)
+   ========================================================================== */
+let cartaoParaExcluir = null;
+
 function excluirMeta(botao) {
-    if (confirm("Tem certeza que deseja excluir esta meta?")) {
-        botao.closest('.kanban-card').remove();
-    }
+    cartaoParaExcluir = botao.closest('.kanban-card');
+    document.getElementById('modal-confirmacao').classList.add('ativo');
 }
 
+function fecharModalConfirmacao() {
+    document.getElementById('modal-confirmacao').classList.remove('ativo');
+    cartaoParaExcluir = null;
+}
+
+function confirmarExclusao() {
+    if (cartaoParaExcluir) {
+        cartaoParaExcluir.remove();
+    }
+    fecharModalConfirmacao();
+}
 
 /* ==========================================================================
-   7. LÓGICA DO MODAL DE NOVA META
+   8. LÓGICA DO MODAL DE NOVA META
    ========================================================================== */
 function abrirModalMeta() {
     document.getElementById('modal-meta').classList.add('ativo');
@@ -290,24 +303,19 @@ document.getElementById('form-meta').addEventListener('submit', function(event) 
 
 
 /* ==========================================================================
-   8. LÓGICA DE FILTRO DO HISTÓRICO (NOVO)
+   9. LÓGICA DE FILTRO DO HISTÓRICO 
    ========================================================================== */
-/**
- * Oculta ou exibe os lançamentos baseando-se no tipo selecionado no <select>
- */
 function filtrarHistorico() {
     const filtroSelecionado = document.getElementById('filtro-tipo').value;
     const itensHistorico = document.querySelectorAll('#lista-historico .item-resultado');
 
-    // Estrutura de repetição para checar cada item individualmente
     itensHistorico.forEach(item => {
         const tipoDoItem = item.getAttribute('data-tipo');
         
-        // Estrutura condicional exigida
         if (filtroSelecionado === 'Todos' || filtroSelecionado === tipoDoItem) {
-            item.style.display = 'flex'; // Exibe o item normalmente
+            item.style.display = 'flex'; 
         } else {
-            item.style.display = 'none'; // Esconde o item se não corresponder
+            item.style.display = 'none'; 
         }
     });
 }

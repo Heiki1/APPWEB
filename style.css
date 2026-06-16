@@ -233,3 +233,27 @@ input[type="number"] { -moz-appearance: textfield; }
     .filtros-container { flex-direction: column; align-items: flex-start; gap: 10px; }
     .filtros-container select { width: 100%; }
 }
+
+/* ... Restante do seu CSS atual ... */
+
+.btn-fechar-modal { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--texto-secundario); transition: color 0.2s; line-height: 1; }
+.btn-fechar-modal:hover { color: var(--cor-negativo); }
+
+/* Classe nova para o modal de confirmação ficar menor e mais elegante */
+.modal-pequeno {
+    max-width: 350px !important;
+    text-align: center;
+}
+.modal-pequeno .modal-header {
+    justify-content: center;
+    position: relative;
+}
+.modal-pequeno .btn-fechar-modal {
+    position: absolute;
+    right: 0;
+}
+
+/* ... Suas Media Queries do Mobile continuam aqui abaixo ... */
+@media (max-width: 768px) {
+    /* ... */
+}
